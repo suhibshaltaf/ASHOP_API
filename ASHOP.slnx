@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ASHOP.BLL/ASHOP.BLL.csproj" />
+  <Project Path="ASHOP.DAL/ASHOP.DAL.csproj" />
+  <Project Path="ASHOP.PL/ASHOP.PL.csproj" />
+</Solution>

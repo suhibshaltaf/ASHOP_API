@@ -1,0 +1,6 @@
+@ASHOP.PL_HostAddress = http://localhost:5228
+
+GET {{ASHOP.PL_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
