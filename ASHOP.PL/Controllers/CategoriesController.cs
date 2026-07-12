@@ -42,6 +42,34 @@ namespace ASHOP.PL.Controllers
 
             return Ok();    
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var category = await _categoryService.GetCategory(c => c.Id == id);
+           
+            return Ok(category);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, CategoryRequest request)
+        {
+            var category = await _categoryService.UpdateCategory(id, request);
+
+            if (category == null)
+                return NotFound();
+
+            return Ok(category);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _categoryService.DeleteCategory(id);
+            if (!result)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }
 
