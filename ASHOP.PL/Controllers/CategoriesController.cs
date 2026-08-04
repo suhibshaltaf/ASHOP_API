@@ -1,5 +1,4 @@
 ﻿using ASHOP.DAL.Data;
-using ASHOP.DAL.DTO;
 using ASHOP.DAL.DTO.Response;
 using ASHOP.DAL.Models;
 using ASHOP.PL.Resources;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using ASHOP.DAL.Repository;
 using ASHOP.BLL.Services;
+using ASHOP.DAL.DTO.Request;
 
 namespace ASHOP.PL.Controllers
 {

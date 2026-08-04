@@ -1,17 +1,23 @@
 
+
 using ASHOP.BLL.Services;
 using ASHOP.DAL.Data;
+using ASHOP.DAL.Models;
 using ASHOP.DAL.Repository;
+using ASHOP.PL.Utils;
+using Microsoft.AspNetCore.Identity;
+using ASHOP.BLL.Common;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Scalar.AspNetCore;
 using System.Globalization;
 
 namespace ASHOP.PL
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -40,8 +46,17 @@ namespace ASHOP.PL
             options.RequestCultureProviders.Add(new  AcceptLanguageHeaderRequestCultureProvider());
             options.RequestCultureProviders.Add(new  AcceptLanguageHeaderRequestCultureProvider());
             });
+            builder.Services.AddIdentity<ApplicationUser,IdentityRole>(
+                Options =>
+                {
+                    Options.User.RequireUniqueEmail = true;
+                        
+                }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<ISeedData, RoleSeedData>();
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             var app = builder.Build();
             app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
@@ -51,11 +66,22 @@ namespace ASHOP.PL
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.MapScalarApiReference();
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var seeders= services.GetServices<ISeedData>();
+                foreach (var seeder in seeders)
+                {
+                     await seeder.DataSeed();
+                }
+            }
 
 
             app.MapControllers();

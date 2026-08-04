@@ -6,10 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup> 
+    <ProjectReference Include="..\ASHOP.DAL\ASHOP.DAL.csproj" /> 
+    <PackageReference Include="MailKit" Version="4.17.0" />
+
     <PackageReference Include="Mapster" Version="7.4.0" />
 
-    <ProjectReference Include="..\ASHOP.DAL\ASHOP.DAL.csproj" />
   </ItemGroup>
 
 </Project>

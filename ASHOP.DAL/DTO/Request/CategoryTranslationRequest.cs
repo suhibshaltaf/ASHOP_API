@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASHOP.DAL.DTO
+namespace ASHOP.DAL.DTO.Request
 {
     public class CategoryTranslationRequest
     {
