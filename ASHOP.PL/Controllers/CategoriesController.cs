@@ -10,11 +10,14 @@ using Microsoft.Extensions.Localization;
 using ASHOP.DAL.Repository;
 using ASHOP.BLL.Services;
 using ASHOP.DAL.DTO.Request;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ASHOP.PL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -31,7 +34,7 @@ namespace ASHOP.PL.Controllers
         public async Task<IActionResult> Index()
 
         {
-            var categories = await _categoryService.GetAllCategories();
+             var categories = await _categoryService.GetAllCategories();
             return Ok(new { _localizer["Success"].Value, categories });
         }
         [HttpPost("")]

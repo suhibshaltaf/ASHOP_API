@@ -4,9 +4,14 @@ using ASHOP.DAL.DTO.Response;
 using ASHOP.DAL.Models;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,10 +21,12 @@ namespace ASHOP.BLL.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly IConfiguration _config;
 
-        public AuthenticationService(UserManager<ApplicationUser> userManager,IEmailSender emailSender) {
+        public AuthenticationService(UserManager<ApplicationUser> userManager,IEmailSender emailSender,IConfiguration configuration) {
            _userManager = userManager;
             _emailSender = emailSender;
+           _config = configuration;
         }
 
       
@@ -52,6 +59,7 @@ namespace ASHOP.BLL.Services
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
             if(user is null) return false;
+            request.Token = Uri.UnescapeDataString(request.Token);
             var result=await _userManager.ConfirmEmailAsync(user, request.Token);
             if (!result.Succeeded)return false;
             return true;
@@ -83,10 +91,36 @@ namespace ASHOP.BLL.Services
                     Message = "Invalid Password"
                 };
             }
-            return new LoginResponse()
+             return new LoginResponse()
             {
-                Message = "Success"
-            };
+                Message = "Success",
+                AccessToken= await Generatejwt(user)
+             };
+        }
+        private async Task<string>Generatejwt(ApplicationUser user)
+        {
+            var roles=await _userManager.GetRolesAsync(user);
+            var UserClaims = new List<Claim>()
+           {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role,string.Join(",", roles)),
+
+           };
+            var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["ApiSetting:secretKey"]));
+
+            var creds = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _config["ApiSetting:issuer"],
+                audience: _config["ApiSetting:audience"],
+                claims: UserClaims,
+                expires: DateTime.Now.AddMonths(20),
+                signingCredentials: creds   
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+
         }
     }
 }
