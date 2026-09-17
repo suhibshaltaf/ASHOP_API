@@ -1,4 +1,4 @@
-﻿using ASHOP.BLL.Services;
+﻿using ASHOP.BLL.Services.Authentication;
 using ASHOP.DAL.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,13 +27,14 @@ namespace ASHOP.PL.Controllers
             return Ok(result);
         }
         [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail([FromQuery]ConfirmEmailRequest request)
+        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest request)
         {
             var result = await _authenticationService.ConfirmEmail(request);
-            if (!result) return BadRequest("Invalid confirmation link.");
 
-          
-            return Ok("Email confirmed successfully.");
+            if (!result.Data)
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }

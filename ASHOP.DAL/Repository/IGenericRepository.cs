@@ -12,9 +12,10 @@ namespace ASHOP.DAL.Repository
     {
         Task<List<T>> GetAllAsync(string[]? includes = null);
         Task<T> CreateAsync(T request);
-        Task<T> Getone(Expression<Func<T, bool>> filter, string[]? includes = null);
+        Task<T>? Getone(Expression<Func<T, bool>> filter, string[]? includes = null);
         Task<T> UpdateAsync(T request);
-      Task <bool>DeleteAsync(T request);
+        void Delete(T request);
+
 
 
     }

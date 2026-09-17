@@ -9,6 +9,5 @@ namespace ASHOP.DAL.DTO.Response
     public class RegisterResponse
     {
         public string Message { get; set; }
-        public List<string> Errors { get; set; }
-    }
+     }
 }

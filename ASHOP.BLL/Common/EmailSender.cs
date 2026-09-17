@@ -1,11 +1,18 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 
 namespace ASHOP.BLL.Common
 {
     public class EmailSender : IEmailSender
     {
+        private readonly IConfiguration _config;
+
+        public EmailSender(IConfiguration config)
+        {
+            _config = config;
+        }
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             try
@@ -14,7 +21,7 @@ namespace ASHOP.BLL.Common
 
                 var emailMessage = new MimeMessage();
 
-                emailMessage.From.Add(new MailboxAddress("ASHOP", "animalfarm.management@gmail.com"));
+                emailMessage.From.Add(new MailboxAddress("ASHOP", _config["EmailSetting:Email"]));
                 emailMessage.To.Add(MailboxAddress.Parse(email));
                 emailMessage.Subject = subject;
 
@@ -28,8 +35,8 @@ namespace ASHOP.BLL.Common
                 Console.WriteLine("2 - Connecting to Gmail...");
 
                 await smtp.ConnectAsync(
-                    "smtp.gmail.com",
-                    465,
+                    _config["EmailSetting:Host"],
+                    int.Parse(_config["EmailSetting:Port"]),
                     SecureSocketOptions.SslOnConnect);
 
                 Console.WriteLine("3 - Connected successfully");
@@ -37,8 +44,8 @@ namespace ASHOP.BLL.Common
                 Console.WriteLine("4 - Authenticating...");
 
                 await smtp.AuthenticateAsync(
-                    "animalfarm.management@gmail.com",
-                    "qaxd obsn sqfb mpio"
+                    _config["EmailSetting:Email"],
+                    _config["EmailSetting:Password"]
                 );
 
                 Console.WriteLine("5 - Authentication successful");

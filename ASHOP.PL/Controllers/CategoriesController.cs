@@ -1,17 +1,9 @@
-﻿using ASHOP.DAL.Data;
-using ASHOP.DAL.DTO.Response;
-using ASHOP.DAL.Models;
+﻿using ASHOP.BLL.Services.Categories;
+using ASHOP.DAL.DTO.Request;
 using ASHOP.PL.Resources;
-using Mapster;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using ASHOP.DAL.Repository;
-using ASHOP.BLL.Services;
-using ASHOP.DAL.DTO.Request;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace ASHOP.PL.Controllers
 {
@@ -20,59 +12,57 @@ namespace ASHOP.PL.Controllers
     [Authorize]
     public class CategoriesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly IStringLocalizer<SharedResources> _localizer;
         private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ApplicationDbContext context, IStringLocalizer<SharedResources> localizer,ICategoryService categoryService)
+        public CategoriesController(
+            IStringLocalizer<SharedResources> localizer,
+            ICategoryService categoryService)
         {
-            _context = context;
             _localizer = localizer;
             _categoryService = categoryService;
         }
-        [HttpGet("")]
-        public async Task<IActionResult> Index()
 
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-             var categories = await _categoryService.GetAllCategories();
-            return Ok(new { _localizer["Success"].Value, categories });
+            var result = await _categoryService.GetAllCategories();
+
+            return result.Success ? Ok(result) : BadRequest(result);
         }
-        [HttpPost("")]
+
+        [HttpPost]
         public async Task<IActionResult> Create(CategoryRequest request)
         {
-            var resonse = await _categoryService.CreateCategory(request);
+            var result = await _categoryService.CreateCategory(request);
 
-
-            return Ok();    
+            return result.Success ? Ok(result) : BadRequest(result);
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var category = await _categoryService.GetCategory(c => c.Id == id);
-           
-            return Ok(category);
+            var result = await _categoryService.GetCategory(c => c.Id == id);
+
+            return result.Success ? Ok(result) : NotFound(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, CategoryRequest request)
+        public async Task<IActionResult> Update(
+            int id,
+            CategoryRequest request)
         {
-            var category = await _categoryService.UpdateCategory(id, request);
+            var result = await _categoryService.UpdateCategory(id, request);
 
-            if (category == null)
-                return NotFound();
-
-            return Ok(category);
+            return result.Success ? Ok(result) : NotFound(result);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _categoryService.DeleteCategory(id);
-            if (!result)
-            {
-                return BadRequest();
-            }
-            return Ok();
+
+            return result.Success ? Ok(result) : NotFound(result);
         }
     }
 }
-

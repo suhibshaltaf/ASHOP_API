@@ -8,6 +8,7 @@
 
   <ItemGroup> 
     <ProjectReference Include="..\ASHOP.DAL\ASHOP.DAL.csproj" /> 
+    <PackageReference Include="CloudinaryDotNet" Version="1.29.3" /> 
     <PackageReference Include="MailKit" Version="4.17.0" />
 
     <PackageReference Include="Mapster" Version="7.4.0" />

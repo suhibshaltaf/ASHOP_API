@@ -23,10 +23,9 @@ namespace ASHOP.DAL.Repository
         public async Task<T> CreateAsync(T request)
         {
             await _context.AddAsync(request);
-            await _context.SaveChangesAsync();
             return request;
         }
-
+         
     
 
         public async Task<List<T>> GetAllAsync(string[]? includes = null)
@@ -63,18 +62,16 @@ namespace ASHOP.DAL.Repository
             return await query.FirstOrDefaultAsync(filter);
 
         }
-        public async Task<bool> DeleteAsync(T request)
+        public void Delete(T request)
         {
             _context.Remove(request);   
-      var affected=  await  _context.SaveChangesAsync();
-            return  affected > 0;
+      
         }
 
         public async Task<T> UpdateAsync(T request)
         {
             _context.Update(request);
-            await _context.SaveChangesAsync();
-            return request;
+             return request;
         }
     }
 }

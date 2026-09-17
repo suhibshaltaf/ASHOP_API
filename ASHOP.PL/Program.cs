@@ -31,6 +31,7 @@ namespace ASHOP.PL
        
 
             var app = builder.Build();
+            app.UseExceptionHandler();
             app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
              MapsterConfig.MapsterConfigRegister();
@@ -41,6 +42,7 @@ namespace ASHOP.PL
                 app.MapScalarApiReference();
             }
 
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

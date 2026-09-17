@@ -17,6 +17,10 @@ namespace ASHOP.BLL.Mapping
             TypeAdapterConfig<Category, CategoryResponse>.NewConfig()
                 .Map(dest => dest.User, src => src.CreatedBy.UserName)
                 .Map(dest => dest.Name, src => src.Translations.Where(t => t.Language == CultureInfo.CurrentUICulture.Name).Select(t=>t.Name).FirstOrDefault());
+
+            TypeAdapterConfig<Product, ProductResponse>.NewConfig()
+               
+                .Map(dest => dest.Name, src => src.Translations.Where(t => t.Language == CultureInfo.CurrentUICulture.Name).Select(t => t.Name).FirstOrDefault()).Map(dest => dest.Description, src => src.Translations.Where(t => t.Language == CultureInfo.CurrentUICulture.Name).Select(t => t.Description).FirstOrDefault());
         }
          
     }

@@ -25,4 +25,20 @@
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+    <Folder Include="Uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\258ae6c7-3d93-4bfe-b951-aabf16d1b2c6.jpeg" />
+    <None Include="wwwroot\Images\36592e4b-8103-4f03-bcd6-768529437f1b.jpeg" />
+    <None Include="wwwroot\Images\66cc23ff-38bf-4618-ac87-34493939aeb4.jpeg" />
+    <None Include="wwwroot\Images\6b7a8078-a91d-4325-8bf8-4240361f0d5e.jpeg" />
+    <None Include="wwwroot\Images\7b409678-3ad2-4f1e-a3a9-31fe603050f5.png" />
+    <None Include="wwwroot\Images\e1dc9104-758c-416e-ab2c-8283dfb6cea3.jpeg" />
+    <None Include="wwwroot\Images\f4c330b2-b272-440a-93bd-f36ab6c952f1.png" />
+    <None Include="wwwroot\Images\fe82df37-4cb4-4519-8ea3-19b03148851f.png" />
+  </ItemGroup>
+
 </Project>

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,9 +19,18 @@ namespace ASHOP.DAL.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
 
+
+        public DbSet<Product>  products { get; set; }
+        public DbSet<ProductTranslation> ProductTranslations { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) :base(options)
         {
             _httpContextAccessor = httpContextAccessor;
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
         }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
