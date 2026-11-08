@@ -10,8 +10,8 @@ namespace ASHOP.DAL.Repository
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<List<T>> GetAllAsync(string[]? includes = null);
-        Task<T> CreateAsync(T request);
+        Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string[]? includes = null);
+            Task<T> CreateAsync(T request);
         Task<T>? Getone(Expression<Func<T, bool>> filter, string[]? includes = null);
         Task<T> UpdateAsync(T request);
         void Delete(T request);

@@ -55,7 +55,8 @@ namespace ASHOP.BLL.Services.Products
      
 
         public async Task<Result<List<ProductResponse>>>GetAllProducts()
-        { var products =await  _unitOfWork.ProductsRepository.GetAllAsync(new string[] { nameof(Product.Translations), nameof(Product.category) });
+        { var products =await  _unitOfWork.ProductsRepository.GetAllAsync(
+           includes: new string[] { nameof(Product.Translations), nameof(Product.category) });
 
                 return new Result<List<ProductResponse>>
                 {

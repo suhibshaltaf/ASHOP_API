@@ -25,7 +25,7 @@ namespace ASHOP.BLL.Services.Categories
         {
          
                 var categories = await _unitOfWork.CategoriesRepository.GetAllAsync(
-                    new string[]
+                       includes: new string[]
                     {
                         nameof(Category.Translations),
                         "CreatedBy"

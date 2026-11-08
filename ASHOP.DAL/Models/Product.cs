@@ -15,7 +15,7 @@ namespace ASHOP.DAL.Models
         public int Quantity { get; set; }
 
         public double Rate { get; set; }
-        public string MainImage { get; set; }
+            public string MainImage { get; set; }
         public string MainImagePublicId { get; set; }
 
         public int CategoryId { get; set; }

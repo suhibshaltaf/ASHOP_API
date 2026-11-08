@@ -10,6 +10,10 @@ namespace ASHOP.DAL.Repository
     {
         ICategoryRepository CategoriesRepository { get; }
         IProductRepository ProductsRepository { get; }
+        ICartRepository CartItemsRepository { get; }
+
+        IOrderRepository orderRepository { get; }
+
         Task<int> CompleteAsync();
     }
 }

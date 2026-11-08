@@ -21,7 +21,13 @@ namespace ASHOP.DAL.Data
 
 
         public DbSet<Product>  products { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
         public DbSet<ProductTranslation> ProductTranslations { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) :base(options)
         {
             _httpContextAccessor = httpContextAccessor;

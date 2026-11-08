@@ -13,6 +13,8 @@ namespace ASHOP.DAL.Repository
         private ICategoryRepository? _CategoriesRepository;
 
         private IProductRepository? _ProductsRepository;
+        private ICartRepository? _CartItemsRepository;
+        private IOrderRepository? _OrderRepository;
 
         public ICategoryRepository CategoriesRepository { get{
             if(_CategoriesRepository is null)
@@ -32,6 +34,30 @@ namespace ASHOP.DAL.Repository
                 return _ProductsRepository;
             }
         }
+
+        public ICartRepository CartItemsRepository
+        {
+            get
+            {
+                if (_CartItemsRepository is null)
+                {
+                    _CartItemsRepository = new CartRepository(_context);
+                }
+                return _CartItemsRepository;
+            }   
+        }
+        public IOrderRepository orderRepository
+        {
+            get
+            {
+                if (_OrderRepository is null)
+                {
+                    _OrderRepository = new OrderRepository(_context);
+                }
+                return _OrderRepository;
+            }
+        }
+
         public UnitOfWork(ApplicationDbContext context)
         {
            _context = context;

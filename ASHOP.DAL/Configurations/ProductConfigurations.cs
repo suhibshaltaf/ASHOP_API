@@ -14,14 +14,19 @@ namespace ASHOP.DAL.Configurations
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasOne(c => c.CreatedBy)
-                               .WithMany()
-                               .HasForeignKey(ct => ct.CreatedById)
-                               .OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(ct => ct.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(c => c.UpdatedBy)
-                 .WithMany()
-                 .HasForeignKey(ct => ct.UpdatedById)
-                 .OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(ct => ct.UpdatedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(p => p.Translations)
+                .WithOne(t => t.Product)
+                .HasForeignKey(t => t.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

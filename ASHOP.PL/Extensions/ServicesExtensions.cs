@@ -18,7 +18,7 @@ namespace ASHOP.PL.Extensions
             Services.AddJWTAuthenticationService(Configuration);
             Services.AddLocalizationService();
 
-            Services.AddApplicationService();
+            Services.AddBusinessServices(Configuration);
             return Services;
         }
         }
